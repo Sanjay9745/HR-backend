@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 const User = require('../models/userModel');
 const authenticateToken = require("./auth")
 const router = express.Router();
-
+const axios = require('axios');
 // Register
 router.post('/register', async (req, res) => {
   try {
@@ -47,7 +47,7 @@ res.status(200).json({ message: "You are authorized"+req.user ,user:req.user})
 
 router.get('/getIP', (req, res) => {
   const ipArray = req.ipInfo.clientIp;
-  console.log(req.ipInfo);
+  console.log(req.ipInfo.ip[0]);
   if (!req.ipInfo.error && Array.isArray(ipArray) && ipArray.length > 0) {
     const firstIp = ipArray[0];
     
