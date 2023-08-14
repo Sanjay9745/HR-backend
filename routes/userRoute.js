@@ -46,6 +46,7 @@ res.status(200).json({ message: "You are authorized"+req.user ,user:req.user})
 })
 
 router.get('/getIP', (req, res) => {
+  console.log(req.ipInfo);
   if (!req.ipInfo.error) {
     axios.get(`https://ipapi.co/${req.ipInfo.ip}/json/`)
       .then(response => {
