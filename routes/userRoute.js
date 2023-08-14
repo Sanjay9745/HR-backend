@@ -46,9 +46,10 @@ res.status(200).json({ message: "You are authorized"+req.user ,user:req.user})
 })
 
 router.get('/getIP', (req, res) => {
-  console.log(req.ipInfo);
+  const firstIp = req.ipInfo.clientIp[0]; // Access the first IP address from the list
+
   if (!req.ipInfo.error) {
-    axios.get(`https://ipapi.co/${req.ipInfo.ip}/json/`)
+    axios.get(`https://ipapi.co/${firstIp}/json/`)
       .then(response => {
         res.status(200).json(response.data);
       })
