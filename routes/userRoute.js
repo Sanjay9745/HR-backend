@@ -47,7 +47,7 @@ res.status(200).json({ message: "You are authorized"+req.user ,user:req.user})
 
 router.get('/getIP', (req, res) => {
   const ipArray = req.ipInfo.clientIp;
-
+  console.log(req.ipInfo);
   if (!req.ipInfo.error && Array.isArray(ipArray) && ipArray.length > 0) {
     const firstIp = ipArray[0];
     
