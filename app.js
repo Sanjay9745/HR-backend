@@ -8,7 +8,7 @@ const culturalRoute = require('./routes/culturalRoute');
 
 const app = express();
 
-//Middlewares
+//Middleware
 app.use(requestIp.mw()); // Use the request-ip middleware
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true })); // Use urlencoded middleware

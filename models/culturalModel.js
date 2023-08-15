@@ -1,4 +1,4 @@
-// models/user.js
+
 const mongoose = require('mongoose');
 
 const culturalSchema = new mongoose.Schema( {

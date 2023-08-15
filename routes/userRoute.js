@@ -3,7 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
-const authenticateToken = require("./auth");
+const authenticateToken = require("../middleware/auth");
 const axios = require("axios");
 
 // Register
@@ -58,7 +58,7 @@ router.post("/login", async (req, res) => {
     return res.status(401).json({ message: "Invalid username or password." });
   }
 
-  const accessToken = jwt.sign({ username }, "your-secret-key");
+  const accessToken = jwt.sign({ username,_id:user._id }, "your-secret-key");
   res.json({ accessToken });
 });
 
