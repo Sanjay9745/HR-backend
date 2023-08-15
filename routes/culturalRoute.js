@@ -74,7 +74,7 @@ router.post("/country-settings", authenticateToken, async (req, res) => {
 });
 
 
-router.get("/country-settings", authenticateToken, async (req, res) => {
+router.get("/country-settings", async (req, res) => {
   try {
     const countrySetting = await CountrySetting.find();
     res.json(countrySetting);
