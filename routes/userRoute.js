@@ -62,7 +62,7 @@ router.get('/getIP', (req, res) => {
     res.status(400).json({ message: 'Error getting IP address.' });
   }
 });
-router.get('/getIp', (req, res) => {
+router.get('/getIp-ad', (req, res) => {
   const ipAddress = req.ip; // Get the IP address from the request
   res.json({ ip: ipAddress });
 });
