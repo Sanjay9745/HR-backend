@@ -1,12 +1,17 @@
 require('dotenv').config(); // Load environment variables from .env file
 const express = require('express');
 const mongoose = require('mongoose');
-const userRoute = require('./routes/userRoute');
 const requestIp = require('request-ip');
+const bodyParser = require('body-parser');
+const userRoute = require('./routes/userRoute');
+const culturalRoute = require('./routes/culturalRoute');
 
 const app = express();
-app.use(express.json());
+
+//Middlewares
 app.use(requestIp.mw()); // Use the request-ip middleware
+app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true })); // Use urlencoded middleware
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
@@ -18,7 +23,7 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 // Routes
 app.use('/api/user',userRoute)
-
+app.use('/api/cultural',culturalRoute)
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
