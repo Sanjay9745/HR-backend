@@ -6,11 +6,10 @@ const User = require("../models/userModel");
 const authenticateToken = require("../middleware/auth");
 const axios = require("axios");
 const Personalize = require("../models/personalizeModel");
-// Register
 router.post("/register", async (req, res) => {
   try {
     const { username, password, email, fullName, user_type } = req.body;
-    
+
     // Validate required fields
     if (!username || !password || !email || !fullName) {
       return res.status(400).json({ message: "Please provide all required fields." });
@@ -30,28 +29,24 @@ router.post("/register", async (req, res) => {
       username,
       password: hashedPassword,
       email,
-      fullName
+      fullName,
+      user_type: user_type || "hradmin" // Use the provided user_type or set default to "hradmin"
     };
-
-    // Conditionally add user_type if it exists in the request
-    if (user_type) {
-      userData.user_type = user_type;
-    }
 
     const user = new User(userData);
     await user.save();
 
-    if (user.user_type === "hradmin") {
-      const personalize = new Personalize({ user: user._id });
+    if (userData.user_type === "hradmin") {
+      const personalize = await Personalize.create({ user_id: user._id });
       await personalize.save();
     }
 
     res.status(201).json({ message: "User registered successfully." });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Error registering user." });
   }
 });
-
 
 
 // Login
@@ -65,7 +60,7 @@ router.post("/login", async (req, res) => {
   }
 
   const accessToken = jwt.sign({ username,_id:user._id }, "your-secret-key");
-  res.json({ accessToken });
+  res.status(200).json(accessToken);
 });
 
 //Update User
