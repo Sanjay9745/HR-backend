@@ -16,6 +16,7 @@ app.use(cors())
 app.use(requestIp.mw()); // Use the request-ip middleware
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true })); // Use urlencoded middleware
+app.use(express.static("uploads"));
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
