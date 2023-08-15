@@ -45,27 +45,21 @@ router.get("/protected", authenticateToken, (req, res) => {
 res.status(200).json({ message: "You are authorized"+req.user ,user:req.user})
 })
 
+
 router.get('/getIP', (req, res) => {
-  const ipArray = req.ipInfo;
-  console.log(ipArray);
-  console.log(req.ipInfo.ip[0]);
-  if (!req.ipInfo.error && Array.isArray(ipArray) && ipArray.length > 0) {
-    const firstIp = ipArray[0];
-    
-    axios.get(`https://ipapi.co/${firstIp}/json/`)
-      .then(response => {
-        res.status(200).json(response.data);
-      })
-      .catch(error => {
-        res.status(400).json({ message: 'Error fetching IP information.' });
-      });
-  } else {
-    res.status(400).json({ message: 'Error getting IP address.' });
-  }
-});
-router.get('/IP', (req, res) => {
   const clientIp = req.clientIp; // Get the client's IP address from the request
   console.log(clientIp);
-  res.json({ ip: clientIp });
+
+  if (!clientIp) {
+    return res.status(400).json({ message: 'Could not retrieve client IP address.' });
+  }
+
+  axios.get(`https://ipapi.co/${clientIp}/json/`)
+    .then(response => {
+      res.status(200).json(response.data);
+    })
+    .catch(error => {
+      res.status(400).json({ message: 'Error fetching IP information.' });
+    });
 });
 module.exports = router;
