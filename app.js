@@ -2,11 +2,11 @@ require('dotenv').config(); // Load environment variables from .env file
 const express = require('express');
 const mongoose = require('mongoose');
 const userRoute = require('./routes/userRoute');
-const expressIp = require('express-ip'); // Import the express-ip middleware
+const requestIp = require('request-ip');
 
 const app = express();
 app.use(express.json());
-app.use(expressIp().getIpInfoMiddleware); // Use the express-ip middleware
+app.use(requestIp.mw()); // Use the request-ip middleware
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, {

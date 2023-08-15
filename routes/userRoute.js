@@ -46,7 +46,8 @@ res.status(200).json({ message: "You are authorized"+req.user ,user:req.user})
 })
 
 router.get('/getIP', (req, res) => {
-  const ipArray = req.ipInfo.clientIp;
+  const ipArray = req.ipInfo;
+  console.log(ipArray);
   console.log(req.ipInfo.ip[0]);
   if (!req.ipInfo.error && Array.isArray(ipArray) && ipArray.length > 0) {
     const firstIp = ipArray[0];
@@ -62,8 +63,9 @@ router.get('/getIP', (req, res) => {
     res.status(400).json({ message: 'Error getting IP address.' });
   }
 });
-router.get('/getIp-ad', (req, res) => {
-  const ipAddress = req.ip; // Get the IP address from the request
-  res.json({ ip: ipAddress });
+router.get('/IP', (req, res) => {
+  const clientIp = req.clientIp; // Get the client's IP address from the request
+  console.log(clientIp);
+  res.json({ ip: clientIp });
 });
 module.exports = router;
