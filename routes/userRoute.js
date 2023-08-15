@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
 const authenticateToken = require("../middleware/auth");
 const axios = require("axios");
-
+const Personalize = require("../models/personalizeModel");
 // Register
 router.post("/register", async (req, res) => {
   try {
@@ -39,13 +39,19 @@ router.post("/register", async (req, res) => {
     }
 
     const user = new User(userData);
-
     await user.save();
+
+    if (user.user_type === "hradmin") {
+      const personalize = new Personalize({ user: user._id });
+      await personalize.save();
+    }
+
     res.status(201).json({ message: "User registered successfully." });
   } catch (error) {
     res.status(500).json({ message: "Error registering user." });
   }
 });
+
 
 
 // Login

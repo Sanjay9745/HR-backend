@@ -5,7 +5,9 @@ const requestIp = require('request-ip');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const userRoute = require('./routes/userRoute');
-const culturalRoute = require('./routes/culturalRoute');
+const countrySettingsRoute = require('./routes/countrySettingsRoute');
+const personalizeRoute = require('./routes/personalizeRoute');
+
 
 const app = express();
 
@@ -24,7 +26,8 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 // Routes
 app.use('/api/user',userRoute)
-app.use('/api/cultural',culturalRoute)
+app.use('/api/country-settings',countrySettingsRoute)
+app.use('/api/personalize',personalizeRoute)
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
