@@ -142,23 +142,23 @@ const companyProfileRoute = async (req, res) => {
       company_approver_email,
       company_approver_replay_email,
     } = req.body;
-
+console.log(req.body);
     // Validate required fields
-    if (
-      !company_name ||
-      !company_address ||
-      !company_industry ||
-      !company_phone ||
-      !company_email ||
-      !company_profile ||
-      !company_approver_name ||
-      !company_approver_email ||
-      !company_approver_replay_email
-    ) {
-      return res
-        .status(400)
-        .json({ message: "Please provide all required fields." });
-    }
+    // if (
+    //   !company_name ||
+    //   !company_address ||
+    //   !company_industry ||
+    //   !company_phone ||
+    //   !company_email ||
+    //   !company_profile ||
+    //   !company_approver_name ||
+    //   !company_approver_email ||
+    //   !company_approver_replay_email
+    // ) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "Please provide all required fields." });
+    // }
 
     const userId = req.user._id;
 
