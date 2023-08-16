@@ -59,7 +59,12 @@ const personalizeSchema = new mongoose.Schema({
   //   },
   // ],
   //workflow
-  workflow: { type: Object, default: {} },
+  workflow: {
+    supervisor: { type:Boolean, default: false },
+    manager: { type:Boolean, default: false },
+    hr: { type:Boolean, default: false },
+    sub_hr: { type:Boolean, default: false },
+   },
   //exclusion criteria
   exclusion_criteria: { type: Object, default: {} },
   //Supervisor

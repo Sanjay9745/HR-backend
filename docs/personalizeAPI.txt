@@ -70,9 +70,15 @@ SCHEMA:
 // Workflow
 POST: /api/personalize/workflow
 BODY:
-- workflow
+- supervisor
+- manage
+- hr
+-sub_hr
 SCHEMA:
-- workflow: Object (default: {})
+- supervisor: { type:Boolean, default: false }
+- manager: { type:Boolean, default: false }
+-hr: { type:Boolean, default: false }
+-sub_hr: { type:Boolean, default: false }
 
 // Exclusion Criteria
 POST: /api/personalize/exclusion-criteria
