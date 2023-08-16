@@ -60,7 +60,7 @@ router.post("/login", async (req, res) => {
   }
 
   const accessToken = jwt.sign({ username,_id:user._id }, "your-secret-key");
-  res.status(200).json(accessToken);
+  res.status(200).json({token:accessToken});
 });
 
 //Update User
