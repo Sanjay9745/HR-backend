@@ -88,4 +88,8 @@ router.post("/tat", authenticateToken, tatRoute);
 router.post("/terminology", authenticateToken, terminologyRoute);
 router.post("/addition-matrix", authenticateToken, additionMatrixRoute);
 
+router.get("/getAllData", authenticateToken, async(req, res) => {
+  const data = await Personalize.findOne({user_id: req.user._id});
+  res.send(data);
+});
 module.exports = router;
