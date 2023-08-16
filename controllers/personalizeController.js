@@ -201,7 +201,7 @@ console.log(req.body);
 //workflow
 const workflowRoute = async (req, res) => {
   try {
-    const { supervisor, manage, hr, sub_hr } = req.body;
+    const { supervisor, manager, hr, sub_hr } = req.body;
 
     const userId = req.user._id;
 
@@ -209,7 +209,7 @@ const workflowRoute = async (req, res) => {
     let personalizeRecord = await Personalize.findOneAndUpdate(
       { user_id: userId },
       {
-        workflow: { supervisor, manage, hr, sub_hr },
+        workflow: { supervisor, manager, hr, sub_hr },
       },
       { new: true, upsert: true, useFindAndModify: false }
     );
