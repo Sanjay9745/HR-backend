@@ -41,23 +41,23 @@ const personalizeSchema = new mongoose.Schema({
     company_hr_logo: { type: Object, default: {} },
   },
   //users creation
-  // user: [
-  //   {
-  //     user_id: {
-  //       type: mongoose.Schema.Types.ObjectId,
-  //       default: mongoose.Types.ObjectId,
-  //     },
-  //     user_name: { type: String, required: true },
-  //     user_email: { type: String, required: true },
-  //     user_password: { type: String, required: true },
-  //     user_access_criteria: { type: Object, default: {} },
-  //     access_grant: {
-  //       country: String,
-  //       department: String,
-  //       grade: Number,
-  //     },
-  //   },
-  // ],
+  users: [
+    {
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        default: mongoose.Types.ObjectId,
+      },
+      user_name: { type: String,default: ""},
+      user_email: { type: String,   default: ""},
+      user_password: { type: String , default: ""},
+      user_access_criteria: { type: Object, default: {} },
+      access_grant: {
+        country: { type: String, default: "" },
+        department:   { type: String, default: "" },
+        grade: { type: String, default: "" },
+      },
+    },
+  ],
   //workflow
   workflow: {
     supervisor: { type:Boolean, default: false },

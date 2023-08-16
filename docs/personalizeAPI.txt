@@ -172,3 +172,36 @@ SCHEMA:
 - matrix_name: String (default: "")
 - factor_one: String (default: "")
 - factor_two: String (default: "")
+
+
+//user creation
+POST:/api/personalize/user-creation
+BODY:       user_name,
+      user_email,
+      user_password,
+      user_access_criteria,
+      country,
+      department,
+      grade,
+SCHEMA:  users: [
+    {
+      _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        default: mongoose.Types.ObjectId,
+      },
+      user_name: { type: String,default: ""},
+      user_email: { type: String,   default: ""},
+      user_password: { type: String , default: ""},
+      user_access_criteria: { type: Object, default: {} },
+      access_grant: {
+        country: { type: String, default: "" },
+        department:   { type: String, default: "" },
+        grade: { type: String, default: "" },
+      },
+    },
+  ],
+
+//user deletion
+
+POST:/api/personalize/user-deletion
+BODY:user_id

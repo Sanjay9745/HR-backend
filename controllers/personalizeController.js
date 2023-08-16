@@ -1,5 +1,5 @@
 const Personalize = require("../models/personalizeModel");
-
+const bcrypt = require("bcrypt");
 //cultural
 const culturalRoute = async (req, res) => {
   try {
@@ -203,15 +203,13 @@ const workflowRoute = async (req, res) => {
   try {
     const { supervisor, manage, hr, sub_hr } = req.body;
 
-
-
     const userId = req.user._id;
 
     // Assuming that you have a Personalize schema
     let personalizeRecord = await Personalize.findOneAndUpdate(
       { user_id: userId },
       {
-        workflow:{supervisor, manage, hr, sub_hr},
+        workflow: { supervisor, manage, hr, sub_hr },
       },
       { new: true, upsert: true, useFindAndModify: false }
     );
@@ -436,6 +434,79 @@ const additionMatrixRoute = async (req, res) => {
   }
 };
 
+//user creation
+const userCreationRoute = async (req, res) => {
+  try {
+    const {
+      user_name,
+      user_email,
+      user_password,
+      user_access_criteria,
+      country,
+      department,
+      grade,
+    } = req.body;
+
+    // Validate required fields
+    if (!user_name || !user_email || !user_password) {
+      return res.status(400).json({ error: "Missing required fields." });
+    }
+
+    // Hash the password using bcrypt
+    const hashedPassword = await bcrypt.hash(user_password, 10);
+
+    const userId = req.user._id;
+
+    // Assuming that you have a Personalize schema
+    let personalizeRecord = await Personalize.findOneAndUpdate(
+      { user_id: userId },
+      {
+        $push: {
+          users: {
+            user_name,
+            user_email,
+            user_password: hashedPassword, // Store hashed password
+            user_access_criteria,
+            access_grant: {
+              country,
+              department,
+              grade,
+            },
+          }
+        }
+      },
+      { new: true, upsert: true, useFindAndModify: false }
+    );
+
+    res.json(personalizeRecord);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
+  }
+};
+//user deletion
+const userDeleteRoute = async (req, res) => {
+  try {
+    const { user_id } = req.body;
+    const userId = req.user._id;
+    let personalizeRecord = await Personalize.findOneAndUpdate(
+      { user_id: userId },
+      {
+        $pull: {
+          users: {
+           _id: user_id,
+          },
+        },
+      },
+      { new: true, upsert: true, useFindAndModify: false }
+    );
+    res.json(personalizeRecord);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
+  }
+}
+
 module.exports = {
   culturalRoute,
   salaryComponentRoute,
@@ -449,4 +520,6 @@ module.exports = {
   tatRoute,
   terminologyRoute,
   additionMatrixRoute,
+  userCreationRoute,
+  userDeleteRoute
 };

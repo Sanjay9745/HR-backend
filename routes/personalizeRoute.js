@@ -13,6 +13,8 @@ const {
   tatRoute,
   terminologyRoute,
   additionMatrixRoute,
+  userCreationRoute,
+  userDeleteRoute,
 } = require("../controllers/personalizeController");
 const authenticateToken = require("../middleware/auth");
 const multer = require("multer"); // Import Multer
@@ -87,9 +89,13 @@ router.post("/total-rewards", authenticateToken, totalRewardsRoute);
 router.post("/tat", authenticateToken, tatRoute);
 router.post("/terminology", authenticateToken, terminologyRoute);
 router.post("/addition-matrix", authenticateToken, additionMatrixRoute);
+router.post("/user-creation", authenticateToken, userCreationRoute);
+router.post("/user-deletion", authenticateToken, userDeleteRoute);
+//End point to get the personalize record
 
 router.get("/getAllData", authenticateToken, async(req, res) => {
   const data = await Personalize.findOne({user_id: req.user._id});
   res.send(data);
 });
+
 module.exports = router;
