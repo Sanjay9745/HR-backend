@@ -1,0 +1,168 @@
+Personalize Endpoints
+
+// Cultural
+POST: /api/personalize/cultural
+BODY:
+- country
+- number
+- currency
+- percentage
+- date_format
+- timezone
+- percentage_round
+- number_round
+- currency_round
+SCHEMA:
+- country: String (default: "")
+- number: String (default: "")
+- currency: String (default: "")
+- percentage: String (default: "")
+- date_format: String (default: "")
+- timezone: String (default: "")
+- percentage_round: String (default: "")
+- number_round: String (default: "")
+- currency_round: String (default: "")
+
+// Salary Component
+POST: /api/personalize/salary-component
+BODY:
+- salary_component
+- merit_applied_on
+SCHEMA:
+- salary_component: Boolean (default: false)
+- merit_applied_on: Object (default: {})
+
+// Integration with HR
+POST: /api/personalize/integration-with-hr
+BODY:
+- integration_with_hr
+- integration_image
+SCHEMA:
+- integration_with_hr: Boolean (default: false)
+- integration_image: Object (default: {})
+
+// Company Profile
+POST: /api/personalize/company-profile
+BODY:
+- company_name
+- company_address
+- company_industry
+- company_phone
+- company_email
+- company_profile
+- company_approver_name
+- company_approver_email
+- company_approver_reply_email
+SCHEMA:
+- company_name: String (default: "")
+- company_address: String (default: "")
+- company_industry: String (default: "")
+- company_phone: String (default: "")
+- company_email: String (default: "")
+- company_profile: String (default: "")
+- company_approver_name: String (default: "")
+- company_approver_email: String (default: "")
+- company_approver_reply_email: String (default: "")
+- company_signature: Object (default: {})
+- company_logo: Object (default: {})
+- company_hr_logo: Object (default: {})
+
+// Workflow
+POST: /api/personalize/workflow
+BODY:
+- workflow
+SCHEMA:
+- workflow: Object (default: {})
+
+// Exclusion Criteria
+POST: /api/personalize/exclusion-criteria
+BODY:
+- exclusion_criteria
+SCHEMA:
+- exclusion_criteria: Object (default: {})
+
+// Supervisor
+POST: /api/personalize/supervisor
+BODY:
+- supervisor_video_url
+- supervisor_attachment
+- supervisor_currency_button
+- supervisor_enable_chat
+- supervisor_employee_letter
+- load_policy
+- load_learning_material
+SCHEMA:
+- load_policy: Object (default: {})
+- load_learning_material: Object (default: {})
+- supervisor_video_url: String (default: "")
+- supervisor_attachment: Boolean (default: false)
+- supervisor_currency_button: Boolean (default: false)
+- supervisor_enable_chat: Boolean (default: false)
+- supervisor_employee_letter: Boolean (default: false)
+
+// HR Review Settings
+POST: /api/personalize/hr-review-settings
+BODY:
+- allow_hr_override
+- justification_mandatory
+- attachment_mandatory
+- edit_on_approval
+SCHEMA:
+- allow_hr_override: Boolean (default: false)
+- justification_mandatory: Boolean (default: false)
+- attachment_mandatory: Boolean (default: false)
+- edit_on_approval: Boolean (default: false)
+
+// Total Rewards
+POST: /api/personalize/total-rewards
+BODY:
+- total_cash
+- total_benefits
+- additional_analysis
+SCHEMA:
+- total_cash: Object (default: {})
+- total_benefits: Object (default: {})
+- additional_analysis: Object (default: {})
+
+// TAT
+POST: /api/personalize/tat
+BODY:
+- tat
+SCHEMA:
+- tat: Number (default: 0)
+
+// Terminology
+POST: /api/personalize/terminology
+BODY:
+- my_team
+- salary
+- compa_ratio
+- range_penetration
+- guideline
+- recommendation
+- new_salary
+- median_salary
+- medium_salary
+SCHEMA:
+- my_team: String (default: "")
+- salary: String (default: "")
+- compa_ratio: String (default: "")
+- range_penetration: String (default: "")
+- guideline: String (default: "")
+- recommendation: String (default: "")
+- new_salary: String (default: "")
+- median_salary: String (default: "")
+- medium_salary: String (default: "")
+
+// Addition Matrix
+POST: /api/personalize/addition-matrix
+BODY:
+- addition_matrix
+- matrix_name
+- factor_one
+- factor_two
+SCHEMA:
+- addition_matrix: Boolean (default: false)
+- matrix_name: String (default: "")
+- factor_one: String (default: "")
+- factor_two: String (default: "")

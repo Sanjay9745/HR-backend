@@ -60,6 +60,7 @@ router.post(
   upload.fields([{ name: "integration_image", maxCount: 1 }]),
   integrationWithHrRoute
 );
+
 router.post(
   "/company-profile",
   authenticateToken,

@@ -24,7 +24,7 @@ const personalizeSchema = new mongoose.Schema({
     integration_with_hr: { type: Boolean, default: false },
     integration_image: { type: Object, default: {} },
   },
-  
+
   //company profile
   company: {
     company_name: { type: String, default: "" },
@@ -40,7 +40,24 @@ const personalizeSchema = new mongoose.Schema({
     company_logo: { type: Object, default: {} },
     company_hr_logo: { type: Object, default: {} },
   },
-
+  //users creation
+  // user: [
+  //   {
+  //     user_id: {
+  //       type: mongoose.Schema.Types.ObjectId,
+  //       default: mongoose.Types.ObjectId,
+  //     },
+  //     user_name: { type: String, required: true },
+  //     user_email: { type: String, required: true },
+  //     user_password: { type: String, required: true },
+  //     user_access_criteria: { type: Object, default: {} },
+  //     access_grant: {
+  //       country: String,
+  //       department: String,
+  //       grade: Number,
+  //     },
+  //   },
+  // ],
   //workflow
   workflow: { type: Object, default: {} },
   //exclusion criteria
@@ -70,26 +87,26 @@ const personalizeSchema = new mongoose.Schema({
     additional_analysis: { type: Object, default: {} },
   },
   //TAT
-    tat: {type: Number, default: 0},
-   //Terminology
-    terminology: {
-        my_team: {type: String, default: ""},
-        salary: {type: String, default: ""},
-        compa_ratio: {type: String, default: ""},
-        range_penetration: {type: String, default: ""},
-        guideline: {type: String, default: ""},
-        recommendation: {type: String, default: ""},
-        new_salary: {type: String, default: ""},
-        median_salary: {type: String, default: ""},
-        medium_salary: {type: String, default: ""},
-    },
-    //Addition Matrix
-     addition_matrix: {
-        addition_matrix: {type: Boolean, default: false},
-        matrix_name: {type: String, default: ""},
-        factor_one: {type: String, default: ""},
-        factor_two: {type: String, default: ""},
-     }
+  tat: { type: Number, default: 0 },
+  //Terminology
+  terminology: {
+    my_team: { type: String, default: "" },
+    salary: { type: String, default: "" },
+    compa_ratio: { type: String, default: "" },
+    range_penetration: { type: String, default: "" },
+    guideline: { type: String, default: "" },
+    recommendation: { type: String, default: "" },
+    new_salary: { type: String, default: "" },
+    median_salary: { type: String, default: "" },
+    medium_salary: { type: String, default: "" },
+  },
+  //Addition Matrix
+  addition_matrix: {
+    addition_matrix: { type: Boolean, default: false },
+    matrix_name: { type: String, default: "" },
+    factor_one: { type: String, default: "" },
+    factor_two: { type: String, default: "" },
+  },
 });
 
 module.exports = mongoose.model("Personalize", personalizeSchema);
