@@ -140,7 +140,7 @@ const companyProfileRoute = async (req, res) => {
       company_profile,
       company_approver_name,
       company_approver_email,
-      company_approver_replay_email,
+      company_approver_reply_email,
     } = req.body;
 console.log(req.body);
     // Validate required fields
@@ -153,7 +153,7 @@ console.log(req.body);
       !company_profile ||
       !company_approver_name ||
       !company_approver_email ||
-      !company_approver_replay_email
+      !company_approver_reply_email
     ) {
       return res
         .status(400)
@@ -182,7 +182,7 @@ console.log(req.body);
           company_profile,
           company_approver_name,
           company_approver_email,
-          company_approver_replay_email,
+          company_approver_reply_email,
           company_signature: companySignatureFile ? companySignatureFile : null,
           company_logo: companyLogoFile ? companyLogoFile : null,
           company_hr_logo: companyHrLogoFile ? companyHrLogoFile : null,

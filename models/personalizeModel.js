@@ -35,7 +35,7 @@ const personalizeSchema = new mongoose.Schema({
     company_profile: { type: String, default: "" },
     company_approver_name: { type: String, default: "" },
     company_approver_email: { type: String, default: "" },
-    company_approver_replay_email: { type: String, default: "" },
+    company_approver_reply_email: { type: String, default: "" },
     company_signature: { type: Object, default: {} },
     company_logo: { type: Object, default: {} },
     company_hr_logo: { type: Object, default: {} },
