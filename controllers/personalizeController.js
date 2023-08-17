@@ -142,7 +142,7 @@ const companyProfileRoute = async (req, res) => {
       company_approver_email,
       company_approver_reply_email,
     } = req.body;
-console.log(req.body);
+    console.log(req.body);
     // Validate required fields
     if (
       !company_name ||
@@ -202,7 +202,6 @@ console.log(req.body);
 const workflowRoute = async (req, res) => {
   try {
     const { supervisor, manager, hr, sub_hr } = req.body;
-
     const userId = req.user._id;
 
     // Assuming that you have a Personalize schema
@@ -420,10 +419,12 @@ const additionMatrixRoute = async (req, res) => {
     let personalizeRecord = await Personalize.findOneAndUpdate(
       { user_id: userId },
       {
-        addition_matrix,
-        matrix_name,
-        factor_one,
-        factor_two,
+        addition_matrix: {
+          addition_matrix,
+          matrix_name,
+          factor_one,
+          factor_two,
+        },
       },
       { new: true, upsert: true, useFindAndModify: false }
     );
@@ -472,8 +473,8 @@ const userCreationRoute = async (req, res) => {
               department,
               grade,
             },
-          }
-        }
+          },
+        },
       },
       { new: true, upsert: true, useFindAndModify: false }
     );
@@ -494,7 +495,7 @@ const userDeleteRoute = async (req, res) => {
       {
         $pull: {
           users: {
-           _id: user_id,
+            _id: user_id,
           },
         },
       },
@@ -505,7 +506,7 @@ const userDeleteRoute = async (req, res) => {
     console.error(err);
     res.status(500).send();
   }
-}
+};
 
 module.exports = {
   culturalRoute,
@@ -521,5 +522,5 @@ module.exports = {
   terminologyRoute,
   additionMatrixRoute,
   userCreationRoute,
-  userDeleteRoute
+  userDeleteRoute,
 };
