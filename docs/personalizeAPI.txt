@@ -193,6 +193,8 @@ POST:/api/personalize/user-creation
 BODY:       user_name,
       user_email,
       user_password,
+           role, // New role field
+      limit_access, 
       user_access_criteria,
       country,
       department,
@@ -206,6 +208,8 @@ SCHEMA:  users: [
       user_name: { type: String,default: ""},
       user_email: { type: String,   default: ""},
       user_password: { type: String , default: ""},
+      role:{ type: String, default: "" },
+      limit_access: { type: Boolean, default: false },
       user_access_criteria: { type: Object, default: {} },
       access_grant: {
         country: { type: String, default: "" },

@@ -97,9 +97,9 @@ const personalizeSchema = new mongoose.Schema({
   },
   //Total rewards Statement
   total_rewards: {
-    total_cash: { type: Object, default: {} },
-    total_benefits: { type: Object, default: {} },
-    additional_analysis: { type: Object, default: {} },
+    total_cash: { type: Array, default: [] },
+    total_benefits:{ type:  Array, default: []},
+    additional_analysis: { type:  Array, default: [] },
   },
   //TAT
   tat: { type: Number, default: 0 },

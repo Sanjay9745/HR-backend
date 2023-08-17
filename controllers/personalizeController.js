@@ -339,6 +339,12 @@ const hrReviewSettingsRoute = async (req, res) => {
 const totalRewardsRoute = async (req, res) => {
   try {
     const { total_cash, total_benefits, additional_analysis } = req.body;
+
+    // Validate input data
+    if (!Array.isArray(total_cash) || !Array.isArray(total_benefits) || !Array.isArray(additional_analysis)) {
+      return res.status(400).json({ error: 'Invalid input data format' });
+    }
+
     const userId = req.user._id;
     let personalizeRecord = await Personalize.findOneAndUpdate(
       { user_id: userId },
@@ -347,10 +353,16 @@ const totalRewardsRoute = async (req, res) => {
       },
       { new: true, upsert: true, useFindAndModify: false }
     );
+
+    // Check if a record was found or created
+    if (!personalizeRecord) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
     res.json(personalizeRecord);
   } catch (err) {
     console.error(err);
-    res.status(500).send();
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
