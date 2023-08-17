@@ -50,6 +50,8 @@ const personalizeSchema = new mongoose.Schema({
       user_name: { type: String,default: ""},
       user_email: { type: String,   default: ""},
       user_password: { type: String , default: ""},
+      role:{ type: String, default: "" },
+      limit_access: { type: Boolean, default: false },
       user_access_criteria: { type: Object, default: {} },
       access_grant: {
         country: { type: String, default: "" },

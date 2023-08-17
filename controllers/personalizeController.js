@@ -472,6 +472,8 @@ const userCreationRoute = async (req, res) => {
       user_name,
       user_email,
       user_password,
+      role,
+      limit_access,
       user_access_criteria,
       country,
       department,
@@ -497,6 +499,8 @@ const userCreationRoute = async (req, res) => {
             user_name,
             user_email,
             user_password: hashedPassword, // Store hashed password
+            role,
+            limit_access,
             user_access_criteria,
             access_grant: {
               country,
@@ -540,28 +544,46 @@ const userDeleteRoute = async (req, res) => {
 
 const userUpdateRoute = async (req, res) => {
   try {
-    const { user_id,     user_name,
+    const {
+      user_id,
+      user_name,
       user_email,
       user_password,
+      role, // New role field
+      limit_access, // New limit_access field
       user_access_criteria,
       country,
       department,
-      grade } = req.body;
+      grade,
+    } = req.body;
     const userId = req.user._id;
 
     let personalizeRecord = await Personalize.findOne({ user_id: userId });
 
-    const userToUpdate = personalizeRecord.users.find(user => user._id.toString() === user_id);
+    const userToUpdate = personalizeRecord.users.find(
+      (user) => user._id.toString() === user_id
+    );
 
     if (userToUpdate) {
       userToUpdate.user_name = user_name;
       userToUpdate.user_email = user_email;
       userToUpdate.user_access_criteria = user_access_criteria;
-      userToUpdate.access_grant={
+      // Add role and limit_access
+      userToUpdate.role = role;
+      userToUpdate.limit_access = limit_access;
+      userToUpdate.access_grant = {
         country,
         department,
         grade,
       };
+
+      // Update password if provided
+      if (user_password) {
+        const hashedPassword = await bcrypt.hash(user_password, 10);
+        userToUpdate.user_password = hashedPassword;
+      }
+
+
     } else {
       return res.status(404).json({ message: "User not found" });
     }
@@ -576,13 +598,13 @@ const userUpdateRoute = async (req, res) => {
 const userReadingRoute = async (req, res) => {
   try {
     const userId = req.user._id;
-    let personalizeRecord = await Personalize.findOne({user_id: userId});
+    let personalizeRecord = await Personalize.findOne({ user_id: userId });
 
     res.status(200).json(personalizeRecord.users);
-  }catch (error) {
-    res.status(500).json({message: error.message});
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-}
+};
 module.exports = {
   culturalRoute,
   salaryComponentRoute,
@@ -600,5 +622,5 @@ module.exports = {
   userDeleteRoute,
   userUpdateRoute,
   userReadingRoute,
-  performanceRoute
+  performanceRoute,
 };
