@@ -372,6 +372,36 @@ const tatRoute = async (req, res) => {
     res.status(500).send();
   }
 };
+//Performance
+const performanceRoute = async (req, res) => {
+  try {
+    const {
+      multiple_performance,
+      bonus_recommendation,
+      salary_mid,
+      step_increment,
+      calculate_arrear,
+    } = req.body;
+    const userId = req.user._id;
+    let personalizeRecord = await Personalize.findOneAndUpdate(
+      { user_id: userId },
+      {
+        performance: {
+          multiple_performance,
+          bonus_recommendation,
+          salary_mid,
+          step_increment,
+          calculate_arrear,
+        },
+      },
+      { new: true, upsert: true, useFindAndModify: false }
+    );
+    res.json(personalizeRecord);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
+  }
+};
 
 //Terminology
 const terminologyRoute = async (req, res) => {
@@ -508,6 +538,51 @@ const userDeleteRoute = async (req, res) => {
   }
 };
 
+const userUpdateRoute = async (req, res) => {
+  try {
+    const { user_id,     user_name,
+      user_email,
+      user_password,
+      user_access_criteria,
+      country,
+      department,
+      grade } = req.body;
+    const userId = req.user._id;
+
+    let personalizeRecord = await Personalize.findOne({ user_id: userId });
+
+    const userToUpdate = personalizeRecord.users.find(user => user._id.toString() === user_id);
+
+    if (userToUpdate) {
+      userToUpdate.user_name = user_name;
+      userToUpdate.user_email = user_email;
+      userToUpdate.user_access_criteria = user_access_criteria;
+      userToUpdate.access_grant={
+        country,
+        department,
+        grade,
+      };
+    } else {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await personalizeRecord.save();
+    res.status(200).json(personalizeRecord);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const userReadingRoute = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    let personalizeRecord = await Personalize.findOne({user_id: userId});
+
+    res.status(200).json(personalizeRecord.users);
+  }catch (error) {
+    res.status(500).json({message: error.message});
+  }
+}
 module.exports = {
   culturalRoute,
   salaryComponentRoute,
@@ -523,4 +598,7 @@ module.exports = {
   additionMatrixRoute,
   userCreationRoute,
   userDeleteRoute,
+  userUpdateRoute,
+  userReadingRoute,
+  performanceRoute
 };

@@ -43,9 +43,9 @@ const personalizeSchema = new mongoose.Schema({
   //users creation
   users: [
     {
-      _id: {
+      user_id: {
         type: mongoose.Schema.Types.ObjectId,
-        default: mongoose.Types.ObjectId,
+        default:  new mongoose.Types.ObjectId(),
       },
       user_name: { type: String,default: ""},
       user_email: { type: String,   default: ""},
@@ -67,6 +67,14 @@ const personalizeSchema = new mongoose.Schema({
    },
   //exclusion criteria
   exclusion_criteria: { type: Object, default: {} },
+  //performance
+  performance: {
+    multiple_performance: { type: Number, default: 0 },
+    bonus_recommendation: { type: Boolean, default: false },
+    salary_mid: { type: Boolean, default: false },
+    step_increment: { type: Boolean, default: false },
+    calculate_arrear: { type: Boolean, default: false },
+  },
   //Supervisor
   supervisor: {
     load_policy: { type: Object, default: {} },

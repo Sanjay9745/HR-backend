@@ -137,6 +137,20 @@ BODY:
 SCHEMA:
 - tat: Number (default: 0)
 
+//performance
+POST: /api/personalize/performance
+BODY: multiple_performance,
+      bonus_recommendation,
+      salary_mid,
+      step_increment,
+      calculate_arrear,
+SCHEMA: multiple_performance: { type: Number, default: 0 },
+    bonus_recommendation: { type: Boolean, default: false },
+    salary_mid: { type: Boolean, default: false },
+    step_increment: { type: Boolean, default: false },
+    calculate_arrear: { type: Boolean, default: false },
+
+
 // Terminology
 POST: /api/personalize/terminology
 BODY:
@@ -205,3 +219,18 @@ SCHEMA:  users: [
 
 POST:/api/personalize/user-deletion
 BODY:user_id
+
+//user-reading
+GET:/api/personalize/user-reading
+NEED TO PROVIDE TOKEN IN HEADER
+
+//user-editing
+POST:/api/personalize/user-editing
+BODY:user_id,
+     user_name,
+      user_email,
+      user_password,
+      user_access_criteria,
+      country,
+      department,
+      grade,
