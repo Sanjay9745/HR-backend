@@ -18,6 +18,8 @@ const {
   userUpdateRoute,
   userReadingRoute,
   performanceRoute,
+  historyDataRoute,
+  getHistoryDataRoute,
 } = require("../controllers/personalizeController");
 const authenticateToken = require("../middleware/auth");
 const multer = require("multer"); // Import Multer
@@ -39,13 +41,16 @@ const storage = multer.diskStorage({
 const fileFilter = (req, file, cb) => {
   if (
     file.mimetype.startsWith("image/") ||
-    file.mimetype.startsWith("application/pdf")
+    file.mimetype.startsWith("application/pdf") ||
+    file.mimetype === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || // XLSX
+    file.mimetype === "text/csv" // CSV
   ) {
     cb(null, true);
   } else {
     cb(new Error("Unsupported file type"), false);
   }
 };
+
 
 const upload = multer({
   storage: storage,
@@ -93,6 +98,8 @@ router.post("/tat", authenticateToken, tatRoute);
 router.post("/performance", authenticateToken, performanceRoute); 
 router.post("/terminology", authenticateToken, terminologyRoute);
 router.post("/addition-matrix", authenticateToken, additionMatrixRoute);
+router.post("/history-data", authenticateToken, upload.fields([{ name: "excel_file", maxCount: 1 }]), historyDataRoute);
+router.get("/history-data", authenticateToken, getHistoryDataRoute);
 
 //user creation
 router.post("/user-creation", authenticateToken, userCreationRoute);

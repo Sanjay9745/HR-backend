@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const userRoute = require('./routes/userRoute');
 const countrySettingsRoute = require('./routes/countrySettingsRoute');
 const personalizeRoute = require('./routes/personalizeRoute');
-
+const planRoute = require('./routes/planRoute');
 const app = express();
 
 //Middleware
@@ -29,7 +29,8 @@ mongoose.connect(process.env.MONGODB_URI, {
 // Routes
 app.use('/api/user',userRoute)
 app.use('/api/country-settings',countrySettingsRoute)
-app.use('/api/personalize',personalizeRoute)
+app.use('/api/personalize',personalizeRoute);
+app.use('/api/plan',planRoute);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

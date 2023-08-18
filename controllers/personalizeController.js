@@ -477,6 +477,39 @@ const additionMatrixRoute = async (req, res) => {
   }
 };
 
+
+//history data
+const historyDataRoute = async (req, res) => {
+  try {
+    const { excel_file } = req.files;
+    const userId = req.user._id;
+    let personalizeRecord = await Personalize.findOneAndUpdate(
+      { user_id: userId },
+      {
+        history_data: excel_file[0],
+      },
+      { new: true, upsert: true, useFindAndModify: false }
+    );
+    
+    res.json(personalizeRecord);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
+  }
+}
+
+
+const getHistoryDataRoute = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    let personalizeRecord = await Personalize.findOne({ user_id: userId });
+    res.json(personalizeRecord.history_data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send();
+  }
+}
+
 //user creation
 const userCreationRoute = async (req, res) => {
   try {
@@ -635,4 +668,6 @@ module.exports = {
   userUpdateRoute,
   userReadingRoute,
   performanceRoute,
+  historyDataRoute,
+  getHistoryDataRoute
 };

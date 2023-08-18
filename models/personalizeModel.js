@@ -77,6 +77,8 @@ const personalizeSchema = new mongoose.Schema({
     step_increment: { type: Boolean, default: false },
     calculate_arrear: { type: Boolean, default: false },
   },
+  //history data
+  history_data: {type: Object, default: {}},
   //Supervisor
   supervisor: {
     load_policy: { type: Object, default: {} },
@@ -103,6 +105,7 @@ const personalizeSchema = new mongoose.Schema({
   },
   //TAT
   tat: { type: Number, default: 0 },
+  
   //Terminology
   terminology: {
     my_team: { type: String, default: "" },
