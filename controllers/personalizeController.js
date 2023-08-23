@@ -650,6 +650,16 @@ const userReadingRoute = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+const getAllDataRoute = async(req, res) => {
+  try {
+    const userId = req.user._id;
+    const user = await Personalize.findOne({ user_id: userId });
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 module.exports = {
   culturalRoute,
   salaryComponentRoute,
@@ -669,5 +679,6 @@ module.exports = {
   userReadingRoute,
   performanceRoute,
   historyDataRoute,
-  getHistoryDataRoute
+  getHistoryDataRoute,
+  getAllDataRoute
 };

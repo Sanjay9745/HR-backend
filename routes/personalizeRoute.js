@@ -20,6 +20,7 @@ const {
   performanceRoute,
   historyDataRoute,
   getHistoryDataRoute,
+  getAllDataRoute,
 } = require("../controllers/personalizeController");
 const authenticateToken = require("../middleware/auth");
 const multer = require("multer"); // Import Multer
@@ -108,9 +109,6 @@ router.post("/user-editing", authenticateToken, userUpdateRoute);
 router.post("/user-deletion", authenticateToken, userDeleteRoute);
 //End point to get the personalize record
 
-router.get("/getAllData", authenticateToken, async(req, res) => {
-  const data = await Personalize.findOne({user_id: req.user._id});
-  res.send(data);
-});
+router.get("/getAllData", authenticateToken, getAllDataRoute);
 
 module.exports = router;
