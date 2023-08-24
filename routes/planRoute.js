@@ -3,7 +3,8 @@ const router = express.Router();
 const Plan = require("../models/planModel");
 const authenticateToken = require("../middleware/auth");
 const multer = require("multer"); // Import Multer
-
+const path = require("path");
+const fs = require("fs");
 // Configure Multer storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -192,4 +193,23 @@ router.post("/template-file", authenticateToken, upload.fields([{ name: "templat
     }
 });
 
+
+
+router.get("/template-file", authenticateToken, async (req, res) => {
+    try {
+      // Path to the XLSX template file
+      const templateFilePath = path.join(__dirname, "../docs/template.xlsx");
+  
+      // Set the appropriate headers for downloading the XLSX file
+      res.setHeader("Content-Disposition", "attachment; filename=template.xlsx");
+      res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"); // XLSX content type
+  
+      // Stream the XLSX file content to the response
+      const fileStream = fs.createReadStream(templateFilePath);
+      fileStream.pipe(res);
+    } catch (error) {
+      console.error("Error sending XLSX template file:", error);
+      res.status(500).json({ error: "An error occurred" });
+    }
+  });
 module.exports = router;

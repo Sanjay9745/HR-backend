@@ -146,3 +146,8 @@ SCHEMA: name: { type: String,default: "Performance Bonus"},
 POST: /api/plan/template-file
 BODY: template_file
 SCHEMA: template_file: { type: Object, required: true},
+header x-access-token  required
+
+//Template File Download
+GET: /api/plan/template-file
+header x-access-token  required
