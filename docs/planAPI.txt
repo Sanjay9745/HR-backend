@@ -140,3 +140,9 @@ SCHEMA: name: { type: String,default: "Performance Bonus"},
         bonus_guideline_percentage: { type: Number},
         pro_rate_bonus: { type: Boolean, default: false},
         pro_rate_bonus_unit: { type: String},
+
+
+//Template File Upload
+POST: /api/plan/template-file
+BODY: template_file
+SCHEMA: template_file: { type: Object, required: true},

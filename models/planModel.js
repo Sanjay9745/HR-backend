@@ -75,6 +75,7 @@ const Schema = mongoose.Schema;
         pro_rate_bonus: { type: Boolean, default: false},
         pro_rate_bonus_unit: { type: String},
         },
+        template_file:{type:Object},
     //  plan_id:{
     //     type: mongoose.Schema.Types.ObjectId,
     //     default:  new mongoose.Types.ObjectId(),

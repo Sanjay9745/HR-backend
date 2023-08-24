@@ -2,7 +2,42 @@ const express = require("express");
 const router = express.Router();
 const Plan = require("../models/planModel");
 const authenticateToken = require("../middleware/auth");
+const multer = require("multer"); // Import Multer
 
+// Configure Multer storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads");
+  },
+  filename: function (req, file, cb) {
+    const timestamp = Date.now();
+    const originalname = file.originalname;
+    const extension = originalname.split(".").pop();
+    const uniqueFilename = `${timestamp}.${extension}`;
+    cb(null, uniqueFilename);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype.startsWith("image/") ||
+    file.mimetype.startsWith("application/pdf") ||
+    file.mimetype === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || // XLSX
+    file.mimetype === "text/csv" // CSV
+  ) {
+    cb(null, true);
+  } else {
+    cb(new Error("Unsupported file type"), false);
+  }
+};
+const upload = multer({
+    storage: storage,
+    limits: {
+      fileSize: 20 * 1024 * 1024, // Maximum file size: 20MB
+    },
+    fileFilter: fileFilter,
+  });
+  
 
 router.post("/", authenticateToken, async (req, res) => {
     try {
@@ -131,6 +166,28 @@ router.post("/performance-bonus", authenticateToken, async (req, res) => {
         console.error(error); // Log the error for debugging
         res.status(500).json({
             error: "An error occurred while updating the performance bonus.",
+        });
+    }
+});
+
+router.post("/template-file", authenticateToken, upload.fields([{ name: "template_file", maxCount: 1 }]), async (req, res) => {
+    const template_file = req.files["template_file"]
+    ? req.files["template_file"][0]
+    : null;
+
+    try {
+        const userId = req.user._id; // Assuming you have a way to get the userId
+        const updatedPlan = await Plan.findOneAndUpdate(
+            { user_id: userId },
+            { $set: { template_file: template_file } },
+            { new: true, upsert: true, useFindAndModify: false }
+        );
+
+        res.json(updatedPlan);
+    }catch (error) {
+        console.error(error); // Log the error for debugging
+        res.status(500).json({
+            error: "An error occurred while updating the template file.",
         });
     }
 });
