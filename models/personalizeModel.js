@@ -105,7 +105,7 @@ const personalizeSchema = new mongoose.Schema({
   },
   //TAT
   tat: { type: Number, default: 0 },
-  
+  tat_time:{type:Date,default:Date.now()},
   //Terminology
   terminology: {
     my_team: { type: String, default: "" },

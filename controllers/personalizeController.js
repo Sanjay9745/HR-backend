@@ -375,6 +375,7 @@ const tatRoute = async (req, res) => {
       { user_id: userId },
       {
         tat,
+        tat_time:Date.now()
       },
       { new: true, upsert: true, useFindAndModify: false }
     );
