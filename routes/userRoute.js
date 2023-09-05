@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router();      
+const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/userModel");
@@ -12,14 +12,18 @@ router.post("/register", async (req, res) => {
 
     // Validate required fields
     if (!username || !password || !email || !fullName) {
-      return res.status(400).json({ message: "Please provide all required fields." });
+      return res
+        .status(400)
+        .json({ message: "Please provide all required fields." });
     }
 
     // Check if username or email already exist
     const existingUser = await User.findOne({ $or: [{ username }, { email }] });
 
     if (existingUser) {
-      return res.status(400).json({ message: "Username or email already exists." });
+      return res
+        .status(400)
+        .json({ message: "Username or email already exists." });
     }
 
     // Hash the password before saving it
@@ -30,7 +34,7 @@ router.post("/register", async (req, res) => {
       password: hashedPassword,
       email,
       fullName,
-      user_type: user_type || "hradmin" // Use the provided user_type or set default to "hradmin"
+      user_type: user_type || "hradmin", // Use the provided user_type or set default to "hradmin"
     };
 
     const user = new User(userData);
@@ -48,7 +52,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-
 // Login
 router.post("/login", async (req, res) => {
   const { username, password } = req.body;
@@ -59,23 +62,33 @@ router.post("/login", async (req, res) => {
     return res.status(401).json({ message: "Invalid username or password." });
   }
 
-  const accessToken = jwt.sign({ username,_id:user._id }, "your-secret-key");
-  res.status(200).json({token:accessToken});
+  const accessToken = jwt.sign(
+    { username, _id: user._id },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "1d",
+    }
+  );
+  res.status(200).json({ token: accessToken });
 });
 
 //Update User
 router.patch("/update", authenticateToken, async (req, res) => {
-try {
-  const password = req.body.password;
-  if (password) {
-    const hashedPassword = await bcrypt.hash(password, 10);
-  let response = User.findOneAndUpdate({username: req.user.username}, {password: hashedPassword}, {new: true});
-  res.status(200).json({message: "Password updated successfully"});
+  try {
+    const password = req.body.password;
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      let response = User.findOneAndUpdate(
+        { username: req.user.username },
+        { password: hashedPassword },
+        { new: true }
+      );
+      res.status(200).json({ message: "Password updated successfully" });
+    }
+  } catch (error) {
+    res.status(404).json({ message: "Error updating password" });
   }
-} catch (error) {
-  res.status(404).json({message: "Error updating password"})
-}
-})
+});
 
 // Protected route
 router.get("/protected", authenticateToken, (req, res) => {
@@ -83,7 +96,6 @@ router.get("/protected", authenticateToken, (req, res) => {
     .status(200)
     .json({ message: "You are authorized" + req.user, user: req.user });
 });
-
 
 //Ip into location
 router.get("/getIP", (req, res) => {
@@ -108,13 +120,12 @@ router.get("/getIP", (req, res) => {
 
 router.get("/percentage", authenticateToken, async (req, res) => {
   try {
-
     const user = await User.findOne({ username: req.user.username });
     res.status(200).json({ percentage: user.percentage });
   } catch (error) {
     res.status(400).json({ message: "Error fetching percentage." });
   }
-})
+});
 router.post("/percentage", authenticateToken, async (req, res) => {
   try {
     const user = await User.findOne({ username: req.user.username });
