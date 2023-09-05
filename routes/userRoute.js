@@ -105,4 +105,24 @@ router.get("/getIP", (req, res) => {
       res.status(400).json({ message: "Error fetching IP information." });
     });
 });
+
+router.get("/percentage", authenticateToken, async (req, res) => {
+  try {
+
+    const user = await User.findOne({ username: req.user.username });
+    res.status(200).json({ percentage: user.percentage });
+  } catch (error) {
+    res.status(400).json({ message: "Error fetching percentage." });
+  }
+})
+router.post("/percentage", authenticateToken, async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.user.username });
+    user.percentage = req.body.percentage;
+    await user.save();
+    res.status(200).json({ message: "Percentage updated successfully." });
+  } catch (error) {
+    res.status(400).json({ message: "Error updating percentage." });
+  }
+});
 module.exports = router;
