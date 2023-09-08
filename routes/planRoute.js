@@ -42,7 +42,16 @@ const XLSX = require("xlsx");
 //   });
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
-
+router.get("/", authenticateToken, async (req, res) => {
+  try {
+    const plan = await Plan.findOne({ user_id: req.user._id });
+    res.status(200).json(plan);
+  } catch (error) {
+    res.status(500).json({
+      error: "An error occurred while getting the plan.",
+    });
+  }
+});
 router.post("/", authenticateToken, async (req, res) => {
   try {
     const planData = {
@@ -178,60 +187,60 @@ router.post("/performance-bonus", authenticateToken, async (req, res) => {
 });
 
 router.post(
-    "/template-file",
-    authenticateToken,
-    upload.single("template_file"),
-    async (req, res) => {
-      try {
-        if (!req.file) {
-          return res.status(400).send("No file uploaded.");
-        }
-  
-        const buffer = req.file.buffer;
-        const workbook = XLSX.read(buffer, { type: "buffer" });
-  
-        // Assuming the data is in the first sheet
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-  
-        // Convert sheet data to an array of objects
-        const jsonData = XLSX.utils.sheet_to_json(sheet);
-  
-        // Extract the fields dynamically from the first row
-        const fields = Object.keys(jsonData[0]);
-  
-        // Create an array of objects with dynamic fields and values
-        const dataArray = jsonData.map((row) => {
-          const dataObject = {};
-          fields.forEach((field) => {
-            dataObject[field] = row[field];
-          });
-          return dataObject;
-        });
-  
-        const userId = req.user._id; // Assuming you have a way to get the userId from authentication
-  
-        const updatedPlan = await Plan.findOneAndUpdate(
-          { user_id: userId },
-          {
-            $set: {
-              template_file_data: dataArray,
-            },
-          },
-          { new: true, upsert: true, useFindAndModify: false }
-        );
-  
-        res.status(200).json(updatedPlan);
-        // Send the array of objects as the response
-      } catch (error) {
-        console.error(error); // Log the error for debugging
-        res.status(500).json({
-          error: "An error occurred while processing the template file.",
-        });
+  "/template-file",
+  authenticateToken,
+  upload.single("template_file"),
+  async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).send("No file uploaded.");
       }
+
+      const buffer = req.file.buffer;
+      const workbook = XLSX.read(buffer, { type: "buffer" });
+
+      // Assuming the data is in the first sheet
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+
+      // Convert sheet data to an array of objects
+      const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+      // Extract the fields dynamically from the first row
+      const fields = Object.keys(jsonData[0]);
+
+      // Create an array of objects with dynamic fields and values
+      const dataArray = jsonData.map((row) => {
+        const dataObject = {};
+        fields.forEach((field) => {
+          dataObject[field] = row[field];
+        });
+        return dataObject;
+      });
+
+      const userId = req.user._id; // Assuming you have a way to get the userId from authentication
+
+      const updatedPlan = await Plan.findOneAndUpdate(
+        { user_id: userId },
+        {
+          $set: {
+            template_file_data: dataArray,
+          },
+        },
+        { new: true, upsert: true, useFindAndModify: false }
+      );
+
+      res.status(200).json(updatedPlan);
+      // Send the array of objects as the response
+    } catch (error) {
+      console.error(error); // Log the error for debugging
+      res.status(500).json({
+        error: "An error occurred while processing the template file.",
+      });
     }
-  );
-  
+  }
+);
+
 router.get("/template-file", authenticateToken, async (req, res) => {
   try {
     // Path to the XLSX template file
